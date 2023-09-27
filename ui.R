@@ -19,6 +19,7 @@ ui <- fluidPage(
                   max = 50,
                   value = 30),
       
+      # Input: Dropdown for the bar colors ----
       selectInput(inputId = "colors",
                   label = "Bar color:",
                   choices = list(
