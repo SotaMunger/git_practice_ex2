@@ -17,18 +17,7 @@ ui <- fluidPage(
                   label = "Number of bins:",
                   min = 1,
                   max = 50,
-                  value = 30),
-      
-      # Input: Dropdown for the bar colors ----
-      selectInput(inputId = "colors",
-                  label = "Bar color:",
-                  choices = list(
-                      "Blue" = "blue",
-                      "Red" = "red",
-                      "Green" = "green"
-                  ),
-                  selected = "blue"
-                  )
+                  value = 30)
       
     ),
     
