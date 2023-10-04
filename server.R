@@ -15,9 +15,13 @@ server <- function(input, output) {
     bins <- seq(min(x), max(x), length.out = input$bins + 1)
     
     hist(x, 
-         breaks = bins,
+         breaks = bins, 
+         # allow input from the bar color dropdown
+         col = input$colors, 
+         border = "white",
          xlab = "Waiting time to next eruption (in mins)",
-         main = "Histogram of waiting times")
+         main = "Histogram of waiting times",
+         labels = as.logical(input$labels))
     
   })
   
