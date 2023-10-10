@@ -1,3 +1,5 @@
+library(plotly)
+
 # Define server logic required to draw a histogram ----
 server <- function(input, output) {
   
@@ -9,19 +11,40 @@ server <- function(input, output) {
   # 1. It is "reactive" and therefore should be automatically
   #    re-executed when inputs (input$bins) change
   # 2. Its output type is a plot
-  output$geyserPlot <- renderPlot({
+  output$geyserPlot <- renderPlotly({
     
-    x    <- faithful$waiting
-    bins <- seq(min(x), max(x), length.out = input$bins + 1)
+    bins <- seq(min(faithful$waiting), max(faithful$waiting), length.out = input$bins + 1)
+    xrange <- range(pretty(faithful$waiting))
     
-    hist(x, 
-         breaks = bins, 
-         # allow input from the bar color dropdown
-         col = input$colors, 
-         border = "white",
-         xlab = "Waiting time to next eruption (in mins)",
-         main = "Histogram of waiting times",
-         labels = as.logical(input$labels))
+    if(input$labels == TRUE) {
+      plot_ly(data = faithful, 
+              x = ~ waiting, 
+              type = "histogram",
+              color = I(input$colors),
+              xbins = list(
+                start = xrange[1],
+                end = xrange[2],
+                size = (xrange[2] - xrange[1])/input$bins
+              )
+      ) %>% 
+        layout(bargap = 0.1)
+    }
+    
+    else {
+      plot_ly(data = faithful, 
+              x = ~ waiting, 
+              type = "histogram",
+              color = I(input$colors),
+              xbins = list(
+                start = xrange[1],
+                end = xrange[2],
+                size = (xrange[2] - xrange[1])/input$bins
+              )
+      ) %>% 
+        layout(bargap = 0.1) %>%
+        style(hoverinfo = 'none')
+      
+    }
     
   })
   

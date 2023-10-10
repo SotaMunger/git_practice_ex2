@@ -46,7 +46,7 @@ ui <- fluidPage(
     mainPanel(
       
       # Output: Histogram ----
-      plotOutput(outputId = "geyserPlot")
+      plotlyOutput(outputId = "geyserPlot")
       
     )
   )
