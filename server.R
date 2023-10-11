@@ -1,4 +1,4 @@
-library(plotly)
+library(ggplot2)
 
 # Define server logic required to draw a histogram ----
 server <- function(input, output) {
@@ -14,38 +14,35 @@ server <- function(input, output) {
   output$geyserPlot <- renderPlotly({
     
     bins <- seq(min(faithful$waiting), max(faithful$waiting), length.out = input$bins + 1)
-    xrange <- range(pretty(faithful$waiting))
     
     if(input$labels == TRUE) {
-      plot_ly(data = faithful, 
-              x = ~ waiting, 
-              type = "histogram",
-              color = I(input$colors),
-              xbins = list(
-                start = xrange[1],
-                end = xrange[2],
-                size = (xrange[2] - xrange[1])/input$bins
-              )
-      ) %>% 
-        layout(bargap = 0.1)
+      ggplot(data = faithful, aes(y = waiting)) +
+        geom_histogram(breaks = bins,
+                       fill = input$colors,
+                       col = "white"
+                       ) +
+        theme_classic() +
+        scale_x_continuous(expand = c(0,0)) +
+        scale_y_continuous(expand = c(0,0)) +
+        stat_bin(aes(label = ..count..),
+                 breaks = bins,
+                 geom = "text",
+                 color = "white",
+                 position = position_stack(vjust = 0.8)
+                 )
     }
     
     else {
-      plot_ly(data = faithful, 
-              x = ~ waiting, 
-              type = "histogram",
-              color = I(input$colors),
-              xbins = list(
-                start = xrange[1],
-                end = xrange[2],
-                size = (xrange[2] - xrange[1])/input$bins
-              )
-      ) %>% 
-        layout(bargap = 0.1) %>%
-        style(hoverinfo = 'none')
-      
+      ggplot(data = faithful, aes(y = waiting)) +
+        geom_histogram(breaks = bins,
+                       fill = input$colors,
+                       col = "white"
+        ) +
+        theme_classic() +
+        scale_x_continuous(expand = c(0,0)) +
+        scale_y_continuous(expand = c(0,0))
     }
-    
+
   })
   
 }
